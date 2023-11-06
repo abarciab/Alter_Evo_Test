@@ -7,7 +7,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] MapDisplay mapScript;
-    MinimapController minimap;
+    [SerializeField] MinimapController minimap;
     [SerializeField] MapMarker testDestination;
 
     [Space()]
@@ -16,8 +16,14 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        mapScript.SetState(false);
+        Init();
+    }
+
+    void Init() {
         minimap = FindObjectOfType<MinimapController>(true);
+        if (!minimap) return;
+
+        mapScript.SetState(false);
 
         minimap._player = player;
         minimap._layoutScript = mapLayout;
@@ -25,6 +31,11 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        if (!minimap) {
+            Init();
+            return;
+        }
+
         if (Input.GetKeyDown(KeyCode.Tab)) mapScript.ToggleState();
         if (Input.GetKeyDown(KeyCode.E)) ReachDestination();
         if (Input.GetKeyDown(KeyCode.R)) ActivateDestination();

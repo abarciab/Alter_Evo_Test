@@ -26,14 +26,17 @@ public class MinimapController : MonoBehaviour
     Vector2 panLimits = new Vector2(1045, 1045);   
     List<KeyValuePair<MapMarker, RectTransform>> markers = new List<KeyValuePair<MapMarker, RectTransform>>();
 
-
-    private void Start()
-    {
+    public void Init() {
         boundsRect = GetComponent<RectTransform>();
 
         //REPLACE ON IMPLEMENTATION
         player = _player;
         layoutScript = _layoutScript;
+    }
+
+    private void Start()
+    {
+        Init();
     }
 
     public void DisableCurrentDestination()
@@ -60,6 +63,8 @@ public class MinimapController : MonoBehaviour
 
     private void Update()
     {
+        if (player == null) Init();
+
         SetMapScale();
 
         if (!Application.isPlaying || player == null) return;
